@@ -7,7 +7,8 @@
 //
 
 import UIKit
-import CoreData
+//import CoreData
+import RealmSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,10 +17,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        //just to see the file location that realm is stored
+        print(Realm.Configuration.defaultConfiguration.fileURL)
+        
+        do{
+            let realm = try Realm()
+        } catch {
+            print("Error while trying to create realm - \(error)")
+        }
+
         return true
     }
-    
+  /*
     func applicationWillTerminate(_ application: UIApplication) {
         
         self.saveContext()
@@ -52,6 +62,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
-
+*/
 }
 
