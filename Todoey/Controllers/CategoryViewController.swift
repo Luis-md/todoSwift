@@ -8,8 +8,9 @@
 
 import UIKit
 import RealmSwift
+import ChameleonFramework
 
-class CategoryViewController: UITableViewController {
+class CategoryViewController: SwipeTableViewController {
 
     let realm = try! Realm()
     
@@ -20,6 +21,10 @@ class CategoryViewController: UITableViewController {
         super.viewDidLoad()
         
         loadCategories()
+        
+        tableView.rowHeight = 80
+        tableView.separatorStyle = .none
+        
     }
     
     //MARK: tableview data source methods
@@ -31,8 +36,10 @@ class CategoryViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
         cell.textLabel?.text = categories?[indexPath.row].name ?? "No categories added yet"
+        //cell.delegate = self
+        cell.backgroundColor = UIColor(hexString: categories?[indexPath.row].bgColor ?? "000000")
         
         return cell
     }
@@ -75,6 +82,20 @@ class CategoryViewController: UITableViewController {
         tableView.reloadData()
     }
     
+    //MARK: - Delete action
+    
+    override func updateModel(at indexPath: IndexPath) {
+        if let categoryForDel = self.categories?[indexPath.row]{
+            do{
+                try self.realm.write {
+                    self.realm.delete(categoryForDel)
+                }
+            } catch{
+                print(error)
+            }
+        }
+    }
+    
     //MARK - add new category
     
     @IBAction func addBtn(_ sender: UIBarButtonItem) {
@@ -85,6 +106,7 @@ class CategoryViewController: UITableViewController {
             
            let newCategory = Category()
             newCategory.name = textField.text!
+            newCategory.bgColor = UIColor.randomFlat.hexValue()
             
             self.save(category: newCategory)
             
@@ -97,7 +119,5 @@ class CategoryViewController: UITableViewController {
         }
         present(alert, animated: true, completion: nil)
     }
-    
-    
-    
 }
+

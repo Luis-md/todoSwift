@@ -22,7 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print(Realm.Configuration.defaultConfiguration.fileURL)
         
         do{
-            let realm = try Realm()
+            _ = try Realm()
+            //it is possible to use _ instead of let realm to initialize the object
         } catch {
             print("Error while trying to create realm - \(error)")
         }

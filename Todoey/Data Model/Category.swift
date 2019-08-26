@@ -12,6 +12,7 @@ import RealmSwift
 class Category: Object {
     
     @objc dynamic var name : String = ""
+    @objc dynamic var bgColor : String = ""
     let items = List<Item>() //this pathern comes from Realm and it is like arrays
     //it is the forward relationship
 }
